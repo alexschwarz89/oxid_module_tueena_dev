@@ -7,8 +7,9 @@ $aModule = array(
     'thumbnail'    => '',
     'version'      => '1.0',
     'author'       => 'bastian.fenske@tueena.com',
-    'extend'       => array(
+    'extend' => array(
         'oxmodule' => 'tueena_dev/core/tueena_dev_core_module',
         'oxmodulelist' => 'tueena_dev/core/tueena_dev_core_modulelist',
-    )
+        'oxshopcontrol' => 'tueena_dev/views/tueena_dev_views_shopcontrol',
+    ),
 );

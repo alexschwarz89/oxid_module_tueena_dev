@@ -5,7 +5,7 @@
  * modules.
  *
  * @author bastian.fenske@tueena.com
- * @package tueena_moduledev
+ * @package tueena_dev
  */
 class tueena_dev_core_ModuleList extends \tueena_dev_core_ModuleList_parent
 {
@@ -33,15 +33,5 @@ class tueena_dev_core_ModuleList extends \tueena_dev_core_ModuleList_parent
 
         // Remove from config tables and templates blocks table.
         $this->_removeFromDatabase($aDisabledModules);
-
-        // Empty tmp/
-        $sTmpPath = __DIR__ . '/../../../tmp/';
-        $DirectoryIterator = new \DirectoryIterator($sTmpPath);
-        foreach ($DirectoryIterator as $Entry) {
-            // Don't want to remove dotfiles.
-            if ('.' !== substr($Entry->getFilename(), 0, 1))
-                unlink(realpath($Entry->getPathname()));
-        }
     }
-
 }

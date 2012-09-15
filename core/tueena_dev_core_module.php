@@ -1,8 +1,11 @@
 <?php
 
 /**
+ * Calls the module list to propagate the module deactivation after a module has
+ * been deactivated.
+ *
  * @author bastian.fenske@tueena.com
- * @package tueena_moduledev
+ * @package tueena_dev
  *
  */
 class tueena_dev_core_Module extends \tueena_dev_core_Module_parent
