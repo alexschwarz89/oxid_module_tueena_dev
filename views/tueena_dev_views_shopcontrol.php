@@ -18,16 +18,15 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
     }
 
     /**
-     * Flushed the file system cache.
+     * Flushes the file system cache.
      */
     public function flushFsCache()
     {
-        $sTmpPath = __DIR__ . '/../../../tmp/';
         $DirectoryIterator = new \DirectoryIterator($this->getFsCachePath());
         foreach ($DirectoryIterator as $Entry) {
             // Don't want to remove dotfiles.
             if ('.' !== substr($Entry->getFilename(), 0, 1))
-            unlink(realpath($Entry->getPathname()));
+                @unlink(realpath($Entry->getPathname()));
         }
     }
 
