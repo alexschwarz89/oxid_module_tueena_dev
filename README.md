@@ -1,12 +1,12 @@
 OXID module tueena_dev
 ======================
 
-This module removes module config from the database when you deactivate a module
-in the backend. Also it emties the `tmp/` directory on each request.
+This module emties the `tmp/` directory and refreshes the modules information
+(metadata) in the database on each request.
 
 Requirements
 ------------
-Tested on OXID 4.6.2 and PHP 5.4. Should run on PHP 5.3, too.
+Tested on OXID 4.6.2 with PHP 5.4 and PHP 5.3.
 
 Install
 -------
