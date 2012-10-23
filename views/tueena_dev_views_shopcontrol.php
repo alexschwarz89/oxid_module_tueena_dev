@@ -49,23 +49,24 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
     public function rebuildModulesInformation()
     {
         // First remove all module information from the db.
-    	$oConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
 
-		$oConfig->setConfigParam('aModules', array());
-		$oConfig->saveShopConfVar('aarr', 'aModules', array());
+        $oConfig->setConfigParam('aModules', array());
+        $oConfig->saveShopConfVar('aarr', 'aModules', array());
 
-		$oConfig->setConfigParam('aModuleFiles', array());
-		$oConfig->saveShopConfVar('aarr', 'aModuleFiles', array());
+        $oConfig->setConfigParam('aModuleFiles', array());
+        $oConfig->saveShopConfVar('aarr', 'aModuleFiles', array());
 
-		$oConfig->setConfigParam('aModuleTemplates', array());
-    	$oConfig->saveShopConfVar('aarr', 'aModuleTemplates', array());
+        $oConfig->setConfigParam('aModuleTemplates', array());
+        $oConfig->saveShopConfVar('aarr', 'aModuleTemplates', array());
 
-    	oxDb::getDb()->execute('DELETE FROM `oxtplblocks`');
+        oxDb::getDb()->execute('DELETE FROM `oxtplblocks`');
 
+        // Then re-activate all modules that are not listed as disabled.
         foreach ($this->getActiveModules() as $sModuleId) {
-        	$oModule = new \oxModule;
-        	$oModule->load($sModuleId);
-        	$oModule->activate();
+            $oModule = new \oxModule;
+            $oModule->load($sModuleId);
+            $oModule->activate();
         }
     }
 
@@ -97,9 +98,8 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
         $sModulesDir = realpath(__DIR__ . '/../../') . '/';
         $oIterator = new \DirectoryIterator($sModulesDir);
         foreach ($oIterator as $oEntry) {
-            if ($oEntry->isDir() && !$oEntry->isDot()) {
+            if ($oEntry->isDir() && !$oEntry->isDot())
                 $aModules[] = $oEntry->getFilename();
-            }
         }
         return $aModules;
     }
@@ -111,7 +111,6 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
      */
     public function getDisabledModules()
     {
-        $oModule = new \oxModule;
-        return $oModule->getDisabledModules();
+        return $this->getConfig()->getConfigParam('aDisabledModules');
     }
 }
