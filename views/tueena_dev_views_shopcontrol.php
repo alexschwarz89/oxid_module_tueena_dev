@@ -64,17 +64,17 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
 
         // Then re-activate all modules that are not listed as disabled.
         foreach ($this->getActiveModules() as $sModuleId) {
-            $oModule = new \oxModule;
-            $oModule->load($sModuleId);
-            $oModule->activate();
+            try {
+                $oModule = new \oxModule;
+                if ($oModule->load($sModuleId))
+                    $oModule->activate();
+            } catch (\Exception $Exception) {
+            }
         }
     }
 
     /**
      * Returns an array of all active module IDs.
-     *
-     * Better said: An array of the names of all subdirectories of the modules
-     * directory without all IDs stored as "disabled modules" in the database.
      *
      * @return array
      */
@@ -86,20 +86,23 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
     }
 
     /**
-     * Returns an aray of the names of all subdirectories of the modules
-     * directory (assuming that this are the IDs of all available modules).
+     * Finds all metadata.php files in the modules/ directory and returns
+     * an array of all IDs defined in those metadata files.
      *
      * @return array
      */
     public function getAllModules()
     {
-        $aModules = array();
-
         $sModulesDir = realpath(__DIR__ . '/../../') . '/';
-        $oIterator = new \DirectoryIterator($sModulesDir);
-        foreach ($oIterator as $oEntry) {
-            if ($oEntry->isDir() && !$oEntry->isDot())
-                $aModules[] = $oEntry->getFilename();
+        $Directory = new RecursiveDirectoryIterator($sModulesDir);
+        $Iterator = new RecursiveIteratorIterator($Directory);
+        foreach ($Iterator as $FileInfo) {
+            if ('metadata.php' === $FileInfo->getFilename()) {
+                include $FileInfo->getPathname();
+                if (isset($aModule['id']))
+                    $aModules[] = $aModule['id'];
+                $aModule = null;
+            }
         }
         return $aModules;
     }
