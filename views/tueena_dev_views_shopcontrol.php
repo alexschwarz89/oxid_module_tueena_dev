@@ -25,9 +25,15 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
      */
     public function flushFsCache()
     {
-        $oDirectoryIterator = new \DirectoryIterator($this->getFsCachePath());
+        $this->deleteFilesInDirectory( $this->getFsCachePath() );
+        $this->deleteFilesInDirectory( $this->getFsCachePath() . 'smarty/' );
+    }
+
+    protected function deleteFilesInDirectory( $sDirectory )
+    {
+        $oDirectoryIterator = new \DirectoryIterator( $sDirectory );
         foreach ($oDirectoryIterator as $oEntry) {
-            if (!$oEntry->isDot())
+            if (!$oEntry->isDot() && !$oEntry->isDir())
                 @unlink($oEntry->getPathname());
         }
     }
@@ -39,7 +45,7 @@ class tueena_dev_views_ShopControl extends \tueena_dev_views_ShopControl_parent
      */
     public function getFsCachePath()
     {
-        return $this->getConfig()->getConfigParam("sCompileDir") . '/';
+        return $this->getConfig()->getConfigParam("sCompileDir");
     }
 
     /**
